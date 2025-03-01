@@ -128,5 +128,52 @@ public abstract class AbstractTree<E> implements Tree<E> {
 
     }
 
+    public void printPreOrderIndent(Tree<E> T, Position<E> p, int d) {
+        System.out.println(String.format("%s %s", d, p.getElement()));
+        for (Position<E> c : T.children(p)) {
+            printPreOrderIndent(T, c, d + 1);
+        }
+    }
+
+    public void printPreorderLabeled(Tree<E> T, Position<E> p, ArrayList<Integer> path) {
+        int d = path.size();
+        System.out.print(2 * d); //print spaces
+        // print indentation, then label
+        for (int j = 0; j < d; j++) {
+            System.out.print(path.get(j) + (j == d - 1 ? " " : "."));
+        }
+        System.out.println(p.getElement());
+        path.add(1);
+        for (Position<E> c : T.children(p)) {
+            printPreorderLabeled(T, c, path);
+            path.set(d, 1 + path.get(d));
+        }
+        path.remove(d);
+    }
+
+
+    public int diskSpace(Tree<Integer> T, Position<Integer> p) {
+        int subtotal = p.getElement();
+        // we assume element represents space usage
+        for (Position<Integer> c : T.children(p)) {
+            subtotal += diskSpace(T, c);
+        }
+        return subtotal;
+    }
+
+
+    public void parenthesize(Tree<E> T, Position<E> p) {
+
+        System.out.print(p.getElement());
+        if (T.isInternal(p)) {
+            boolean firstTime = true;
+            for (Position<E> c : T.children(p)) {
+                System.out.print((firstTime ? " (" : ", ")); // determine proper punctuation
+                firstTime = false;
+                parenthesize(T, c);
+            }
+            System.out.print(")");
+        }
+    }
 
 }
