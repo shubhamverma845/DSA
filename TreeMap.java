@@ -19,6 +19,14 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
             }
         }
 
+        public int getAux(Position<Entry<K, V>> p) {
+            return ((BSTNode<Entry<K, V>>) p).getAux();
+        }
+
+        public void setAux(Position<Entry<K, V>> p, int value) {
+            ((BSTNode<Entry<K, V>>) p).setAux(value);
+        }
+
         @Override
         protected Node<Entry<K, V>> createNode(Entry<K, V> e, Node<Entry<K, V>> parent, Node<Entry<K, V>> left, Node<Entry<K, V>> right) {
             return new BSTNode<>(e, parent, left, right);
